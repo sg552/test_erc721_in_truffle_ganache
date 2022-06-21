@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 
-contract MyTestNft is ERC721URIStorage {
+contract MyTestNftB is ERC721URIStorage {
     uint256 private _tokensCount = 0;
     address public minter = address(0);
 
@@ -21,11 +21,12 @@ contract MyTestNft is ERC721URIStorage {
         _;
     }
 
-    constructor() ERC721("MyTestNft", "MTN") {
+    constructor() ERC721("MyTestNftB", "MTNB") {
         minter = msg.sender;
     }
 
-    function mint(address to) external onlyMinter {
+    // function mint(address to) external onlyMinter {
+    function mint(address to) external {
 
         uint256 tokenId = _tokensCount + 1;
         _mint(to, tokenId);
