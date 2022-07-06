@@ -1,7 +1,7 @@
 // contract 地址要有
-const CONTRACT_ADDRESS = "0x6FCa9C7EDF4898cF8F0D48E60E1CcB51660505e6"
+const CONTRACT_ADDRESS = "0x5bEa39E27fD77739C6C8877666942D0aa8230961"
 // abi 要有
-const contractJson = require('./build/contracts/TestEvent.json')
+const contractJson = require('./build/contracts/TestVariable.json')
 
 module.exports = async function (callback) {
   // web3 是Truffle的自动引入的对象
@@ -10,10 +10,9 @@ module.exports = async function (callback) {
   // 获得 network , 这个是根据参数传入的
   const network = await web3.eth.net.getNetworkType()
 
-  // TODO 这里最最关键。
-  // 生成一个tx, 该tx是调用了 mintNFT产生的
-  //const tx = contract.methods.mint()
-  const tx = contract.methods.sayHi(99)
+  // const tx = contract.methods.setMessage("today is 2022-07-06, hot day!")
+  // const tx = contract.methods.setAmount(321)
+  const tx = contract.methods.printVariables()
 
   // 发送！
   const receipt = await tx
@@ -32,13 +31,11 @@ module.exports = async function (callback) {
   .then(function(receipt){
     console.log('====== total: ')
     console.log(receipt)
-    console.log('====== events.HiEvent: ', receipt.events.HiEvent)
-    console.log('====== events.HiEvent.returnValues: ', receipt.events.HiEvent.returnValues)
-    console.log('====== events.HiEvent.returnValues.message: ', receipt.events.HiEvent.returnValues.message)
-    console.log('====== events.HiEvent.returnValues.amount: ', receipt.events.HiEvent.returnValues.amount)
+    console.log('====== events.ShowVar: ', receipt.events.ShowVar)
     // Success, you've minted the NFT. The transaction is now on chain!
     console.log(
         `Success: The NFT has been minted and mined in block ${receipt.blockNumber}`)
     callback()
   })
+
 }
