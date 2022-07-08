@@ -1,22 +1,30 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract VeryGoodNft is ERC721URIStorage {
+contract VeryGoodNftWithMaxSupply is ERC721URIStorage {
+
   uint256 private _currentId = 0;
   address public rootAddress = address(0);
-  uint256 private _max_nft_count = 10;
+  uint256 public _maxSupply = 3;
 
   event Minted(address to, uint256 nftId, address minter);
 
-  constructor() ERC721("VeryGoodNft", "http://baidu.com/1.jpg") {
+  modifier shouldLessThanMaxSupply(){
+    require(
+      _currentId < _maxSupply, "Reached max supply, no available nft left"
+    );
+    // 下划线表示被hook方法的内容。 会在编译、执行的时候做个替换
+    _;
+  }
+
+  constructor() ERC721("VeryGoodNftWithMaxSupply", "VGNWM") {
     rootAddress = msg.sender;
   }
 
-  function mint(address to) external{
+  function mint(address to) external shouldLessThanMaxSupply{
     uint256 nftId = _currentId + 1;
     _mint(to, nftId);
     _currentId = nftId;
